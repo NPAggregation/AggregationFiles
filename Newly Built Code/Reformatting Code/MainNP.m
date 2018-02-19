@@ -75,9 +75,9 @@ particles = VelocityInitialize(particles, N, Tcorr);
 
 %% Neighbour List %%
 % Compute distance between all pairs of particles
-tic
+
 particles = ComputeDistance(particles, N, rNbr2);
-toc
+
 
 %% Subroutines %%
 % The following methods will compute thew new position of particles,
@@ -86,6 +86,6 @@ toc
 % boundary conditions, scale velocity, update neighbours list and print the
 % results for each time step up until the max time.
 
-%%for t = 1:maxStep
-   %%particles = PositionPredictor(particles, N, dtv); 
-%%end
+for t = 1:maxStep
+   particles = PositionPredictor(particles, N, dtv); 
+end

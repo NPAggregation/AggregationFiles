@@ -31,6 +31,8 @@ classdef Particle
               particle.d3 = zeros(3);
               particle.d4 = zeros(3);
               particle.d5 = zeros(3);
+              particle.Force = zeros(3);
+              particle.Momentum = zeros(3);
               if isnumeric(arrSize)
                   particle.NeighborList = Neighbour([]);       % Instantiate neigboour list with number of particles in system as worst case
               else
