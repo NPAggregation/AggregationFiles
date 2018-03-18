@@ -13,9 +13,9 @@ for x = 1 : n
             if (particleID <= N)
                 % Set positions of particle i as (x, y, z) in position
                 % matrix.
-                particle = Particle("H", N);               % Instantiate a new Hydorgen particle
+                particle = Particle("H", N, particleID);                % Instantiate a new Hydorgen particle
                 particle.Position = [(dx * x) (dx * y) (dx * z)];       % Update the position of this particle
-                pos(particleID) = particle;                 % Add particle's information into array
+                pos(particleID) = particle;                             % Add particle's information into array
                 particleID = particleID + 1;
             end
         end

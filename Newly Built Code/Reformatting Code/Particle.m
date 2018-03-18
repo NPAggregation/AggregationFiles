@@ -18,23 +18,25 @@ classdef Particle
         d5;                             % Fifth Derivative (Crackle) (Angstrom/s^5)
         Force;                          % Force ((Grams Angstrom)/s^2)
         Momentum;                       % Momentum ((Grams Angstrom)/s)
+        id;                             % Particle Identifier Number 
     end
     methods
         % Constructor of particle data class
         % Takes in the symbol of element/compound and size of neighbourlist
-        function particle = Particle(specieSymbol, arrSize)
-           if nargin == 2
+        function particle = Particle(specieSymbol, arrSize, id)
+           if nargin == 3
               % Initialize the following arrays with x, y , z
-              particle.Position = zeros(3);
-              particle.Velocity = zeros(3);
-              particle.Acceleration = zeros(3);
-              particle.d3 = zeros(3);
-              particle.d4 = zeros(3);
-              particle.d5 = zeros(3);
-              particle.Force = zeros(3);
-              particle.Momentum = zeros(3);
+              particle.Position = zeros(1, 3);
+              particle.Velocity = zeros(1, 3);
+              particle.Force = rand(1, 3);
+              particle.Acceleration = particle.Force/257.0;
+              particle.d3 = zeros(1, 3);
+              particle.d4 = zeros(1, 3);
+              particle.d5 = zeros(1, 3);
+              particle.Momentum = zeros(1, 3);
+              particle.id = id;
               if isnumeric(arrSize)
-                  particle.NeighborList = Neighbour([]);       % Instantiate neigboour list with number of particles in system as worst case
+                  particle.NeighborList = zeros(1, arrSize);       % Instantiate neigboour list with number of particles in system as worst case
               else
                   error('Second parameter must be numeric.')
               end

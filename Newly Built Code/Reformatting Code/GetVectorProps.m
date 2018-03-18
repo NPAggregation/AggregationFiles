@@ -3,7 +3,7 @@
 % Property could be velocity, acceleration, etc.
 
 function vector = GetVectorProps(particles, N, pos)
-variable = 0;
+variable = zeros(1, N);
 for i = 1:N
    variable(i) = particles(i).Position(pos); 
 end
