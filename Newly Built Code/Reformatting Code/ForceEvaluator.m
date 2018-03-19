@@ -1,6 +1,7 @@
 %% Force Evaluator %%
 % Determine the Lennard Jones force between each particle pair ij
-function particle = ForceEvaluator(Particle, N, sigma, eps, mass)
+
+function particle = ForceEvaluator(Particle, N, sigma, eps)
 sig6 = sigma^6; sig12 = sigma^12;
 for i = 1:N
     for j = (i + 1):N

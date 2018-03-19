@@ -1,8 +1,8 @@
-%% Initializing Velocity %%
-% Initializes velocity of all the particles in the system
+%% Initializing Velocity and Acceleration %%
+% Initializes velocity and acceleration of all the particles in the system
 
 function particles = VelocityInitialize(Particles, N, Tcorr)
-% Assign Random Velocities (Between -1 and 1) (units?)
+% Assign Random Velocities and Acceleration (Between -1 and 1)
 for i = 1:N
     Particles(i).Velocity(1) = (2 * rand) - 1;
     Particles(i).Velocity(2) = (2 * rand) - 1;
@@ -21,13 +21,13 @@ for i = 1:N
     sumA(1:3) = sumA(1:3) + Particles(i).Acceleration(1:3);
 end
     
-% Normally distributing velocity of particles in the system?
+% Normally distributing velocity and acceleration of particles in the system
 for i = 1:N
     Particles(i).Velocity(1:3) =  Particles(i).Velocity(1:3) - (sumV(1:3) / N);
     Particles(i).Velocity(1:3) =  Particles(i).Acceleration(1:3) - (sumA(1:3) / N);
 end
 
-% Velocity Scaling
+% Velocity and Acceleration Scaling
 for i = 1:N
     sumVSq = sum(Particles(i).Velocity.^2);
     sumASq = sum(Particles(i).Acceleration.^2);

@@ -1,4 +1,5 @@
 %% Function to Initialize Initial Positions of Particles %%
+% Function intializes position of each particle
 
 function posMatrix = PositionInitialization(N, side, pos)
 n = ceil(N^(1.0/3.0));              % Number of atoms that can fit on one side of cube

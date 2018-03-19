@@ -1,5 +1,6 @@
 %% Lennard Jones Evaluator %%
 % Determine the Lennard Jones potential between each particle pair ij
+
 function particle = LennardJonesEvaluator(Particle, N, sigma, eps)
 sig6 = sigma^6; sig12 = sigma^12;
 for i = 1:N

@@ -15,7 +15,7 @@ rCut = 15;              % Cut-off Distance (Angstroms)
 Q = 0;                  % Charge of Atom (Coulomb)                      ***
 e0 = 8.854187;          % Vacuum Permittivity (Farads/metre)            ***
 kb = 1.38066e-5;        % Boltzmann's Constant (aJ/molecule/K)          ***
-maxStep = 2000;         % Upper bound for iterations
+maxStep = 100;         % Upper bound for iterations
 U = 0;                  % Potential Energy (J)                          ***
 sampleIntval = 5;       % Sampling Interval
 nbrIntval = 10;         % Neighbor's List Update Interval
@@ -29,7 +29,7 @@ nProp = 4;              % Number of Properties
 particles = Particle([]); 
 
 %% Initial Computations and Correction Balancing Variables %%
-mass = MW / Na / 1000 * 1e28;                    % (kg / molecule)
+mass = MW / Na / 1000 * 1e28;               % (kg / molecule)
 Tcorr = (3.0 * N * kb * T) / mass;          % Temperature Correction Factor (Angstrom/fs)^2
 dtva = [dt dt^2 dt^3 dt^4 dt^5];            % Gear Correction Factor
 fv = [1 2 6 24 120];                        % Vector of Factorials
@@ -60,12 +60,6 @@ xlabel('x'), ylabel('y'), zlabel('z'), title('Coordinates of Particles');
 xlim([0 ceil(side)]), ylim([0 ceil(side)]), zlim([0 ceil(side)]);
 grid on
 
-%% Initialize System Potential %%
-
-%ULJ = LennardJones(eps, sigma, rCut);       % Lennard-Jones Potential (eV)
-%UCoulomb = Q^2 / (4 * pi * e0 * rCut);      % Coulomb Potential (eV)
-%UTot = ULJ + UCoulomb;                      % Meaure of bonding potential and total system energy
-
 %% Initial Velocity %%
 % Initialize the velocity of particles with zerno net momentum in the
 % system.
@@ -90,11 +84,9 @@ for t = 1:dt:maxStep
    particles = PositionPredictor(particles, N, dtv);
    particles = VelocityScale(N, particles, Tcorr);
    particles = BoundaryCondition(N, particles, side);
-   
-   particles = ForceEvaluator(particles, N, sigma, eps, mass);
+   particles = ForceEvaluator(particles, N, sigma, eps);
    particles = LennardJonesEvaluator(particles, N, sigma, eps);
    particles = RepelParticles(particles, N);
-   %particles = PositionCorrector(particles, N, mass, alpha);
    ULJ = TotalLennardJones(N, particles);
    particles = ComputeDistance(particles, N, rNbr2);
    
@@ -102,6 +94,7 @@ for t = 1:dt:maxStep
    KE = (1 / 2) * mass * TotVelocity^2;
    TotE = KE + ULJ; 
    fprintf('%2.0f %15.3f %25.3f %23.3f\n', t, KE, ULJ, TotE);
+   y(t) = ULJ;
    
    pos = zeros(N, 3);
    for i = 1:3
@@ -114,3 +107,5 @@ for t = 1:dt:maxStep
    xlim([0 ceil(side)]), ylim([0 ceil(side)]), zlim([0 ceil(side)]);
    grid on
 end
+t = 1:maxStep;
+plot(t, y);

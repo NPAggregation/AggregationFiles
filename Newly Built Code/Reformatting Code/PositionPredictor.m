@@ -1,4 +1,5 @@
 %% New Position Predictor %%
+% Generates new kinematic values for each particle
 
 function particle = PositionPredictor(Particle, N, dtv)
 % Compute new position, velocity, acceleration and more for each particle

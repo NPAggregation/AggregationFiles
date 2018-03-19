@@ -1,3 +1,7 @@
+%% Velocity and Accelration Scaling %%
+% Scale the velocity and acceleration of particles based on temperature
+% correction factor for the system.
+
 function particles = VelocityScale(N, Particle, Tcorr)
 for i = 1:N
     sumVSq = sum(Particle(i).Velocity.^2);
