@@ -13,7 +13,7 @@ function particle = ComputeDistance(Particle, N, rNbr2)
 for i = 1:N
     for j = (i+1):N
        if (i ~= j)
-            % Compute distnace between ith and jth particle, where i != j
+            % Compute distance between ith and jth particle, where i != j
             distance(1:3) = (Particle(i).Position(1:3) - Particle(j).Position(1:3)).^2;
             distance = sqrt(sum(distance));
             % "I don't think sideH checkers make sense or understand the sideH checkers" %

@@ -1,7 +1,7 @@
 %% General Conditions %%
 T = 300;                % Temperature (K)
 Vn = 512;               % Atom size (Angstroms Cubed/Atom)
-N = 50;                 % Number of Atoms
+N = 27;                 % Number of Atoms
 Vol = N * Vn;           % Total Volume (Angstroms^3)
 side = Vol^(1.0/3.0);   % Length of Side of Simulation Volume (Angstrom)
 dt = 1;                 % Time Step (fs)
@@ -17,7 +17,7 @@ e0 = 8.854187;          % Vacuum Permittivity (Farads/metre)            ***
 kb = 1.38066e-5;        % Boltzmann's Constant (aJ/molecule/K)          ***
 maxStep = 2000;         % Upper bound for iterations
 U = 0;                  % Potential Energy (J)                          ***
-sampleIntval = 5;       % Sampling Interval
+sampleIntval = 1;       % Sampling Interval
 nbrIntval = 10;         % Neighbor's List Update Interval
 writeIntval = 100;      % Writing Interval
 nProp = 4;              % Number of Properties
@@ -90,11 +90,9 @@ for t = 1:dt:maxStep
    particles = PositionPredictor(particles, N, dtv);
    particles = VelocityScale(N, particles, Tcorr);
    particles = BoundaryCondition(N, particles, side);
-   
    particles = ForceEvaluator(particles, N, sigma, eps, mass);
    particles = LennardJonesEvaluator(particles, N, sigma, eps);
-   particles = RepelParticles(particles, N);
-   %particles = PositionCorrector(particles, N, mass, alpha);
+   particles 
    ULJ = TotalLennardJones(N, particles);
    particles = ComputeDistance(particles, N, rNbr2);
    

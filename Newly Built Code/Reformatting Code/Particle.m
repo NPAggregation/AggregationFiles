@@ -17,6 +17,7 @@ classdef Particle
         d4;                             % Fourth Derivative (Crackle) (Angstrom/s^4)
         d5;                             % Fifth Derivative (Crackle) (Angstrom/s^5)
         Force;                          % Force ((Grams Angstrom)/s^2)
+        LJ;                             % Lennard Jones Potential (eV)
         Momentum;                       % Momentum ((Grams Angstrom)/s)
         id;                             % Particle Identifier Number 
     end
@@ -28,8 +29,7 @@ classdef Particle
               % Initialize the following arrays with x, y , z
               particle.Position = zeros(1, 3);
               particle.Velocity = zeros(1, 3);
-              particle.Force = rand(1, 3);
-              particle.Acceleration = particle.Force/257.0;
+              particle.Acceleration = zeros(1, 3);
               particle.d3 = zeros(1, 3);
               particle.d4 = zeros(1, 3);
               particle.d5 = zeros(1, 3);
@@ -37,6 +37,8 @@ classdef Particle
               particle.id = id;
               if isnumeric(arrSize)
                   particle.NeighborList = zeros(1, arrSize);       % Instantiate neigboour list with number of particles in system as worst case
+                  particle.Force = zeros(1, arrSize);
+                  particle.LJ = zeros(1, arrSize);
               else
                   error('Second parameter must be numeric.')
               end
