@@ -1,7 +1,7 @@
 %% General Conditions %%
 T = 300;                % Temperature (K)
 Vn = 512;               % Atom size (Angstroms Cubed/Atom)
-N = 50;                 % Number of Atoms
+N = 30;                 % Number of Atoms
 Vol = N * Vn;           % Total Volume (Angstroms^3)
 side = Vol^(1.0/3.0);   % Length of Side of Simulation Volume (Angstrom)
 dt = 1;                 % Time Step (fs)
@@ -42,7 +42,7 @@ rCut9 = rCut^9;
 
 % Corrector Coefficients for Gear Using Dimensioned Variables
 gear = [(3.0 / 2.0) (251.0 / 360.0) (1.0) (11.0 / 18.0) (1.0 / 6.0) (1.0 / 60.0)];
-dtv6 = [1 dt (dt * dt) (dt * dt * dt) (dt * dt * dt * dt) (dt * dt * dt * dt * dt)];
+dtv6 = [1 dt dt^2 dt^3 dt^4 dt^5];
 fv6 = [1 1 2 6 24 120];
 alpha(1:6) = gear(1:6)./(dtv6(1:6).*fv6);
 alpha = (alpha * dt^2) / 2;
