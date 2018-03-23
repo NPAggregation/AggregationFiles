@@ -4,7 +4,7 @@ Vn = 512;               % Atom size (Angstroms Cubed/Atom)
 N = 30;                 % Number of Atoms
 Vol = N * Vn;           % Total Volume (Angstroms^3)
 side = Vol^(1.0/3.0);   % Length of Side of Simulation Volume (Angstrom)
-dt = 1;                 % Time Step (fs)
+dt = 0.1;               % Time Step (fs)
 MW = 1.0;               % Molecular Weight (Grams/mole)
 halfSide = 0.5 * side;  % Half of the Side (Angstrom)
 density = 1 / Vn;       % Molar Density (Atom/Angstrom)
@@ -15,8 +15,8 @@ rCut = 15;              % Cut-off Distance (Angstroms)
 Q = 0;                  % Charge of Atom (Coulomb)                      ***
 e0 = 8.854187;          % Vacuum Permittivity (Farads/metre)            ***
 kb = 1.38066e-5;        % Boltzmann's Constant (aJ/molecule/K)          ***
-maxStep = 100;         % Upper bound for iterations
-U = 0;                  % Potential Energy (J)                          ***
+maxStep = 50;           % Upper bound for iterations
+%U = 0;                 % Potential Energy (J)                          ***
 sampleIntval = 5;       % Sampling Interval
 nbrIntval = 10;         % Neighbor's List Update Interval
 writeIntval = 100;      % Writing Interval
@@ -79,22 +79,30 @@ particles = ComputeDistance(particles, N, rNbr2);
 % boundary conditions, scale velocity, update neighbours list and print the
 % results for each time step up until the max time.
 fprintf('Time (s) Kinetic Energy (aJ) Lennard Jones Potential (aJ) Total Energy (aJ)\n');
-y = zeros(1, maxStep);
+U = 0;
+LJ = 0;
+x = 0;
+j = 1;
 for t = 1:dt:maxStep
    particles = PositionPredictor(particles, N, dtv);
    particles = VelocityScale(N, particles, Tcorr);
    particles = BoundaryCondition(N, particles, side);
    particles = ForceEvaluator(particles, N, sigma, eps);
    particles = LennardJonesEvaluator(particles, N, sigma, eps);
-   particles = RepelParticles(particles, N);
+   if (mod(t, 1) == 1)
+       particles = RepelParticles(particles, N);
+   end
    ULJ = TotalLennardJones(N, particles);
    particles = ComputeDistance(particles, N, rNbr2);
    
    TotVelocity = TotalVelocity(N, particles);
    KE = (1 / 2) * mass * TotVelocity^2;
    TotE = KE + ULJ; 
-   fprintf('%2.0f %15.3f %25.3f %23.3f\n', t, KE, ULJ, TotE);
-   y(t) = ULJ;
+   fprintf('%2.1f %15.3f %25.3f %23.3f\n', t, KE, ULJ, TotE);
+   U(j) = ULJ;
+   LJ(j) = particles(1).LJ(2);
+   x(j) = particles(1).NeighborList(2);
+   j = j + 1;
    
    pos = zeros(N, 3);
    for i = 1:3
@@ -107,5 +115,10 @@ for t = 1:dt:maxStep
    xlim([0 ceil(side)]), ylim([0 ceil(side)]), zlim([0 ceil(side)]);
    grid on
 end
-t = 1:maxStep;
-plot(t, y);
+t = 1:dt:maxStep;
+figure
+plot(t, U); title('Total Lennard Jones vs Time')
+figure
+plot(t, LJ); title('Lennard Jones Between i, j Pair vs Time')
+figure
+plot(x, LJ); title('Lennard Jones vs Distance')

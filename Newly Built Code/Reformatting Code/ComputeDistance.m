@@ -1,12 +1,5 @@
 %% Distance Computing Method %%
 % Computes distance between each particle in the system
-% Prior issue existed when trying to use this statement (18/02/18):
-%{
-    neighbouri = Neighbour(Particle(j), distance);
-    neighbourj = Neighbour(Particle(i), distance);
-    Particle(i).NeighborList(size(Particle(i).NeighborList) + 1) = neighbouri;
-    Particle(j).NeighborList(size(Particle(j).NeighborList) + 1) = neighbourj;
-%}
 % Allows us to set the particle distance of (i,j) and (j,i)
 
 function particle = ComputeDistance(Particle, N, rNbr2)
@@ -16,8 +9,6 @@ for i = 1:N
             % Compute distance between ith and jth particle, where i doesnt equal j
             distance(1:3) = (Particle(i).Position(1:3) - Particle(j).Position(1:3)).^2;
             distance = sqrt(sum(distance));
-            
-            % Check if distance is less than cut off distance
             % If so update distance of both i and j particles
             if (distance <= rNbr2)
                 neighborIDi = Particle(j).id;
